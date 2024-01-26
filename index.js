@@ -16,15 +16,30 @@ const Categoria = mongoose.model("categorias");
 const usuarios = require("./routes/usuario");
 const passport = require("passport");
 require("./config/auth")(passport);
+const MongoStore = require("connect-mongo");
 
+require("dotenv").config();
+const dbUri = process.env.MONGODB_CONNECT_URI || "mongodb://localhost/blogapp";
 // Configurações
 
 // sessão
+// app.use(
+//   session({
+//     secret: "cursodenode",
+//     resave: true,
+//     saveUninitialized: true,
+//   }),
+// );
+
 app.use(
   session({
     secret: "cursodenode",
     resave: true,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: dbUri,
+      ttl: 14 * 24 * 60 * 60, // Session will expire in 14 days
+    }),
   }),
 );
 
@@ -51,9 +66,6 @@ app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Conexão com o banco
-
-require("dotenv").config();
-const dbUri = process.env.MONGODB_CONNECT_URI || "mongodb://localhost/blogapp";
 
 const connectDB = async () => {
   try {
@@ -163,4 +175,3 @@ const PORT = 8089;
 app.listen(PORT, () => {
   console.log("Servidor rodando!");
 });
-
