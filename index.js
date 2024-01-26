@@ -31,17 +31,17 @@ const dbUri = process.env.MONGODB_CONNECT_URI || "mongodb://localhost/blogapp";
 //   }),
 // );
 
-// app.use(
-//   session({
-//     secret: "cursodenode",
-//     resave: true,
-//     saveUninitialized: true,
-//     store: MongoStore.create({
-//       mongoUrl: dbUri,
-//       ttl: 14 * 24 * 60 * 60, // Session will expire in 14 days
-//     }),
-//   }),
-// );
+app.use(
+  session({
+    secret: "cursodenode",
+    resave: true,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: dbUri,
+      ttl: 14 * 24 * 60 * 60, // Session will expire in 14 days
+    }),
+  }),
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -79,7 +79,7 @@ const connectDB = async () => {
 connectDB();
 
 // Public - arquivos estáticos
-app.use(express.static(path.join(__dirname, "public"))); //__dirname - caminho absoluto
+app.use(express.static(path.join(__dirname, "/public"))); //__dirname - caminho absoluto
 app.use((req, res, next) => {
   next();
 });
