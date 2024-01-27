@@ -62,8 +62,15 @@ app.use(bodyParser.json());
 
 // configuração do handlebars
 
-app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
+// app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+app.engine(
+  "handlebars",
+  handlebars.engine({
+    defaultLayout: "main",
+    layoutsDir: path.join(__dirname, "views", "layouts"),
+  }),
+);
 
 // Conexão com o banco
 
